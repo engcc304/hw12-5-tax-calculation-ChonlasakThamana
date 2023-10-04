@@ -47,3 +47,71 @@
         Tax (7% per year) : 61,017.60 Bath
         Most tax in company : Bill (18,564.00 Bath per year)
 */
+#include <stdio.h>
+#include <string.h>
+#include <locale.h>
+
+#define MAX_EMPLOYEES 100
+
+// สร้างโครงสร้างข้อมูลสำหรับพนักงาน
+struct Employee {
+    char name[50];
+    double salaryPerMonth;
+};
+
+// ฟังก์ชันคำนวณภาษีและคืนค่ายอดเงินภาษีที่ต้องชำระ
+double calculateTax(double salaryPerYear) {
+    return salaryPerYear * 0.07;
+}
+
+int main() {
+    struct Employee employees[MAX_EMPLOYEES];
+    int employeeCount = 0;
+    double totalSalaryPerYear = 0;
+    char name[50];
+
+    // ตั้งค่าให้มี , เป็นตัวคั่นหลักพัน
+    setlocale(LC_NUMERIC, "en_US.UTF-8");
+
+    printf("โปรแกรมคำนวณภาษีพนักงาน\n");
+
+    // รับข้อมูลพนักงานและคำนวณภาษี
+    while (1) {
+        printf("Employee %d's Name: ", employeeCount + 1);
+        scanf("%s", employees[employeeCount].name);
+
+        // ถ้าชื่อพนักงานเป็น -1 ให้สิ้นสุดการกรอกข้อมูล
+        if (strcmp(employees[employeeCount].name, "-1") == 0) {
+            break;
+        }
+
+        printf("Salary (Bath/Month): ");
+        scanf("%lf", &employees[employeeCount].salaryPerMonth);
+
+        totalSalaryPerYear += employees[employeeCount].salaryPerMonth * 12;
+        employeeCount++;
+    }
+
+    // คำนวณภาษีทั้งหมด
+    double totalTax = calculateTax(totalSalaryPerYear);
+
+    // หาคนที่ต้องชำระภาษีเยอะที่สุด
+    double maxTax = 0;
+    char maxTaxEmployee[50];
+
+    for (int i = 0; i < employeeCount; i++) {
+        double employeeTax = calculateTax(employees[i].salaryPerMonth * 12);
+        if (employeeTax > maxTax) {
+            maxTax = employeeTax;
+            strcpy(maxTaxEmployee, employees[i].name);
+        }
+    }
+
+    // แสดงผลลัพธ์ตรงกับ Test Case และ Output
+    printf("All salary per month: %'.2lf Bath\n", totalSalaryPerYear / 12);
+    printf("All salary per year: %'.2lf Bath\n", totalSalaryPerYear);
+    printf("Tax (7%% per year): %'.2lf Bath\n", totalTax);
+    printf("Most tax in company: %s (%'.2lf Bath per year)\n", maxTaxEmployee, maxTax);
+
+    return 0;
+}
