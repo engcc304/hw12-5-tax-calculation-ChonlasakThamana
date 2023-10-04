@@ -49,6 +49,7 @@
 */
 #include <stdio.h>
 #include <string.h>
+#include <locale.h>
 
 #define MAX_EMPLOYEES 100
 
@@ -68,6 +69,9 @@ int main() {
     int employeeCount = 0;
     double totalSalaryPerYear = 0;
     char name[50];
+
+    // ตั้งค่าให้มี , เป็นตัวคั่นหลักพัน
+    setlocale(LC_NUMERIC, "en_US.UTF-8");
 
     printf("โปรแกรมคำนวณภาษีพนักงาน\n");
 
@@ -103,11 +107,11 @@ int main() {
         }
     }
 
-    // แสดงผลลัพธ์
-    printf("All salary per month: %.2lf Bath\n", totalSalaryPerYear / 12);
-    printf("All salary per year: %.2lf Bath\n", totalSalaryPerYear);
-    printf("Tax (7%% per year): %.2lf Bath\n", totalTax);
-    printf("Most tax in company: %s (%.2lf Bath per year)\n", maxTaxEmployee, maxTax);
+    // แสดงผลลัพธ์ตรงกับ Test Case และ Output
+    printf("All salary per month: %'.2lf Bath\n", totalSalaryPerYear / 12);
+    printf("All salary per year: %'.2lf Bath\n", totalSalaryPerYear);
+    printf("Tax (7%% per year): %'.2lf Bath\n", totalTax);
+    printf("Most tax in company: %s (%'.2lf Bath per year)\n", maxTaxEmployee, maxTax);
 
     return 0;
 }
